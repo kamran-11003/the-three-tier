@@ -1,20 +1,29 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Instrument_Serif, Manrope, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-display",
+  weight: "400",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+});
+
+const manrope = Manrope({
+  variable: "--font-body",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-mono",
+  weight: ["300", "400", "500"],
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "The Three Tier | Build, Connect, Scale",
-  description: "We build AI systems, automate operations, and launch scalable products.",
+  title: "THE THREE TIER — AI Infrastructure Platform",
+  description:
+    "Enterprise-scale AI infrastructure for high-stakes decisions. 99% automation accuracy, 60% faster operational cycles.",
 };
 
 export default function RootLayout({
@@ -25,9 +34,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${instrumentSerif.variable} ${manrope.variable} ${ibmPlexMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body
+        className="min-h-full flex flex-col bg-ink text-paper selection:bg-signal/30 selection:text-paper"
+        suppressHydrationWarning
+      >
+        <div className="grain-overlay" />
+        {children}
+      </body>
     </html>
   );
 }
