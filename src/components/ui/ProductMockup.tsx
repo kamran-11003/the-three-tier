@@ -263,7 +263,17 @@ export const ProductMockup: React.FC = () => {
   );
 };
 
-const NodeItem: React.FC<{ node: any }> = ({ node }) => {
+interface NodeItemData {
+  id: string;
+  label: string;
+  sub: string;
+  x: number;
+  y: number;
+  icon: React.ReactNode;
+  status: string;
+}
+
+const NodeItem: React.FC<{ node: NodeItemData }> = ({ node }) => {
   return (
     <div className="w-[120px] bg-ink border border-smoke hover:border-signal p-2 transition-all duration-300 cursor-pointer group flex flex-col space-y-1 z-20">
       <div className="flex items-center justify-between">

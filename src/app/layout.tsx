@@ -21,9 +21,31 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.thethreetier.com"),
   title: "THE THREE TIER — AI Infrastructure Platform",
   description:
     "Enterprise-scale AI infrastructure for high-stakes decisions. 99% automation accuracy, 60% faster operational cycles.",
+  keywords: ["AI infrastructure", "automation", "enterprise AI", "machine learning", "operational cycles"],
+  openGraph: {
+    title: "THE THREE TIER — AI Infrastructure Platform",
+    description: "Enterprise-scale AI infrastructure for high-stakes decisions. 99% automation accuracy, 60% faster operational cycles.",
+    url: "https://www.thethreetier.com",
+    siteName: "The Three Tier",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "THE THREE TIER — AI Infrastructure Platform",
+    description: "Enterprise-scale AI infrastructure for high-stakes decisions. 99% automation accuracy, 60% faster operational cycles.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: "https://www.thethreetier.com",
+  },
 };
 
 export default function RootLayout({

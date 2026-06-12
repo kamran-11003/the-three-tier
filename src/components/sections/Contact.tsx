@@ -171,6 +171,8 @@ export const Contact: React.FC = () => {
               src="/images/contact-bg-texture.jpg"
               alt="Dark Brushed Aluminum Texture"
               fill
+              sizes="(max-width: 1024px) 100vw, 400px"
+              loading="lazy"
               className="object-cover opacity-80 animate-pulse-slow"
             />
           </div>

@@ -134,6 +134,8 @@ export const Platform: React.FC = () => {
                         src={tabs[activeTab].image}
                         alt={tabs[activeTab].title}
                         fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        loading="lazy"
                         className="object-cover"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
@@ -213,6 +215,8 @@ export const Platform: React.FC = () => {
                             src={tab.image}
                             alt={tab.title}
                             fill
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            loading="lazy"
                             className="object-cover"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;

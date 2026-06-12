@@ -28,6 +28,8 @@ export const Hero: React.FC = () => {
           alt="Infrastructure Silhouette"
           fill
           priority
+          quality={60}
+          sizes="50vw"
           className="object-cover"
           onError={(e) => {
             const target = e.target as HTMLImageElement;

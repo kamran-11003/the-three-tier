@@ -83,6 +83,8 @@ export const CaseStudies: React.FC = () => {
                     src={c.image}
                     alt={c.company}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    loading="lazy"
                     className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;

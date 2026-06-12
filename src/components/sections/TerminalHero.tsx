@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { TERMINAL_SCENES, LogLine, LogToken } from '@/lib/terminal-script'
+import { TERMINAL_SCENES, LogToken } from '@/lib/terminal-script'
 
 // ─── Types ────────────────────────────────────────────────────
 interface RenderedLine {
@@ -114,6 +114,7 @@ export function TerminalHero() {
   useEffect(() => {
     runScene(0)
     return clearTimeouts
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

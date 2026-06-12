@@ -15,7 +15,7 @@ export const CounterStat: React.FC<CounterStatProps> = ({ value }) => {
   useEffect(() => {
     const numericMatch = value.match(/^(\d+(?:\.\d+)?)(.*)$/);
     if (!numericMatch) {
-      setDisplayValue(value);
+      setTimeout(() => setDisplayValue(value), 0);
       return;
     }
 
