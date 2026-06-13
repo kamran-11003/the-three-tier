@@ -30,7 +30,7 @@ export default function Home() {
     "@type": "Organization",
     name: "The Three Tier",
     url: "https://www.thethreetier.com",
-    logo: "https://www.thethreetier.com/images/logo_v4.png",
+    logo: "https://www.thethreetier.com/images/logo_v5.png",
     description:
       "Enterprise-scale AI infrastructure for high-stakes decisions.",
     sameAs: ["https://www.thethreetier.com"],

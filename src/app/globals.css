@@ -236,3 +236,41 @@ body {
     linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
   background-size: 40px 40px;
 }
+
+/* Custom Prose Styles for Case Studies */
+.prose-custom {
+  @apply font-body text-[16px] leading-[1.8] text-ghost;
+}
+
+.prose-custom p {
+  @apply mb-6;
+}
+
+.prose-custom p:last-child {
+  @apply mb-0;
+}
+
+.prose-custom strong {
+  @apply font-semibold text-paper;
+}
+
+.prose-custom ul {
+  @apply list-none pl-0 mb-6 space-y-3;
+}
+
+.prose-custom ul li {
+  @apply relative pl-6;
+}
+
+.prose-custom ul li::before {
+  content: "";
+  @apply absolute left-0 top-[0.6em] w-2 h-[1px] bg-signal;
+}
+
+.prose-custom ol {
+  @apply list-decimal pl-5 mb-6 space-y-3 text-paper font-mono text-[14px];
+}
+
+.prose-custom ol li {
+  @apply pl-2 font-body text-[16px] text-ghost;
+}

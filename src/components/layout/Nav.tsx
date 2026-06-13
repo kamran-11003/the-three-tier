@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 export const Nav: React.FC = () => {
@@ -25,15 +26,15 @@ export const Nav: React.FC = () => {
     >
       <div className="container w-full flex items-center justify-between">
         {/* Left: Logo */}
-        <a href="#" className="flex items-center gap-3 group active:scale-[0.97] transition-transform duration-200" style={{ transitionTimingFunction: 'var(--ease-out)' }}>
-          <div className="w-5 h-5 border border-signal flex flex-col justify-between p-0.5 transition-colors group-hover:border-paper">
-            <div className="h-1 bg-signal w-full transition-colors group-hover:bg-paper" />
-            <div className="h-1 bg-signal w-full transition-colors group-hover:bg-paper" />
-            <div className="h-1 bg-signal w-full transition-colors group-hover:bg-paper" />
-          </div>
-          <span className="font-mono text-xs tracking-[0.12em] uppercase text-paper font-semibold">
-            THE THREE TIER
-          </span>
+        <a href="/" className="flex items-center gap-3 group active:scale-[0.97] transition-transform duration-200" style={{ transitionTimingFunction: 'var(--ease-out)' }}>
+          <Image 
+            src="/images/logo_mark.png" 
+            alt="The Three Tier Logo" 
+            width={120} 
+            height={48} 
+            className="h-10 md:h-12 w-auto object-contain transition-opacity group-hover:opacity-80" 
+            priority
+          />
         </a>
 
         {/* Center: Nav links */}
