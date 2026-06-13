@@ -134,7 +134,7 @@ export const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Bottom Marquee Strip */}
+      {/* Bottom Marquee Strip — CSS animation runs off main thread */}
       <div className="border-t border-wire bg-ink py-5 z-10">
         <div className="container flex flex-col md:flex-row items-center gap-4 md:gap-8">
           <span className="font-mono text-[10px] tracking-wider text-ghost uppercase shrink-0">
@@ -145,10 +145,9 @@ export const Hero: React.FC = () => {
             <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-ink to-transparent z-10 pointer-events-none" />
             <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-ink to-transparent z-10 pointer-events-none" />
 
-            <motion.div
-              animate={{ x: ["0%", "-50%"] }}
-              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-              className="inline-flex gap-16"
+            <div
+              className="inline-flex gap-16 animate-marquee"
+              aria-hidden="true"
             >
               {[...brands, ...brands].map((brand, i) => (
                 <span
@@ -158,7 +157,7 @@ export const Hero: React.FC = () => {
                   {brand}
                 </span>
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

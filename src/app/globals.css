@@ -102,7 +102,14 @@
 }
 
 html {
+  /* Gate smooth scroll — avoids CLS on anchor nav for reduced-motion users */
   scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
@@ -151,7 +158,8 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-size: 128px 128px;
   animation: grain 0.8s steps(2) infinite;
-  will-change: background-position;
+  /* Removed will-change: background-position — promotes to compositor layer unnecessarily */
+  contain: strict;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -161,6 +169,17 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
+  /* Keep grain overlay but stop animating it */
+  .grain-overlay {
+    animation: none;
+  }
+}
+
+/* content-visibility for below-fold sections — skips render cost until in view */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 600px;
 }
 
 /* Perspective Utilities */

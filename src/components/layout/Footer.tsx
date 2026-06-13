@@ -31,11 +31,11 @@ export const Footer: React.FC = () => {
             Product
           </span>
           <ul className="space-y-2 text-[13px]">
-            {["Platform", "Agents", "Integrations", "Changelog", "Pricing"].map(
+            {(["Platform", "Agents", "Integrations", "Changelog", "Pricing"] as const).map(
               (item) => (
                 <li key={item}>
                   <a
-                    href="#platform"
+                    href={item === "Pricing" ? "/pricing" : "/#platform"}
                     className="hover:text-paper transition-colors duration-200"
                   >
                     {item}

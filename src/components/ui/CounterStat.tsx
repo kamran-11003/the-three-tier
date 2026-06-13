@@ -23,6 +23,16 @@ export const CounterStat: React.FC<CounterStatProps> = ({ value }) => {
     const suffix = numericMatch[2];
     const duration = 1200;
 
+    // Respect prefers-reduced-motion — skip animation, show final value
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion) {
+      setDisplayValue(value);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];

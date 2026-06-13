@@ -87,8 +87,8 @@ export const Platform: React.FC = () => {
             ))}
           </div>
 
-          {/* Right: Content Pane (col-span 8) */}
-          <div className="col-span-8 min-h-[420px] bg-ash border border-smoke p-8 relative overflow-hidden flex flex-col justify-between">
+          {/* Right: Content Pane (col-span 8) — fixed height so all tabs match */}
+          <div className="col-span-8 h-[480px] bg-ash border border-smoke p-6 relative overflow-hidden flex flex-col">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
@@ -96,9 +96,9 @@ export const Platform: React.FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 8 }}
                 transition={{ duration: 0.25 }}
-                className="space-y-6 flex-1 flex flex-col justify-between"
+                className="flex flex-col h-full"
               >
-                <div>
+                <div className="flex-shrink-0">
                   <h3 className="font-body text-xl font-semibold text-paper">
                     {tabs[activeTab].title}
                   </h3>
@@ -107,17 +107,17 @@ export const Platform: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Pane Content */}
-                <div className="mt-8 flex-1 flex items-end">
+                {/* Pane Content — fills remaining space */}
+                <div className="mt-4 flex-1 overflow-hidden min-h-0">
                   {tabs[activeTab].cases ? (
-                    <div className="grid grid-cols-3 gap-4 w-full">
+                    <div className="grid grid-cols-3 gap-4 h-full">
                       {tabs[activeTab].cases?.map((c, i) => (
                         <div
                           key={i}
-                          className="border border-smoke p-4 bg-ink space-y-3"
+                          className="border border-smoke p-4 bg-ink flex flex-col justify-between h-full"
                         >
                           <TagChip>{c.type}</TagChip>
-                          <div>
+                          <div className="mt-3">
                             <h4 className="font-body text-sm font-semibold text-paper">
                               {c.name}
                             </h4>
@@ -129,14 +129,14 @@ export const Platform: React.FC = () => {
                       ))}
                     </div>
                   ) : (
-                    <div className="relative w-full aspect-[1.83] overflow-hidden border border-smoke bg-ink">
+                    <div className="relative w-full h-full overflow-hidden border border-smoke bg-ink">
                       <Image
-                        src={tabs[activeTab].image}
+                        src={tabs[activeTab].image!}
                         alt={tabs[activeTab].title}
                         fill
                         sizes="(max-width: 768px) 100vw, 50vw"
                         loading="lazy"
-                        className="object-cover"
+                        className="object-cover object-top"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = tabs[activeTab].fallbackImage || "";

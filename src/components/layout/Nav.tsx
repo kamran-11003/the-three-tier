@@ -39,11 +39,11 @@ export const Nav: React.FC = () => {
         {/* Center: Nav links */}
         <nav className="hidden md:flex items-center gap-8">
           {[
-            { label: "Product", href: "#platform" },
-            { label: "Use Cases", href: "#case-studies" },
-            { label: "Platform", href: "#platform" },
-            { label: "Pricing", href: "#pricing" },
-            { label: "Contact", href: "#contact" },
+            { label: "Product", href: "/#platform" },
+            { label: "Use Cases", href: "/#case-studies" },
+            { label: "Platform", href: "/#platform" },
+            { label: "Pricing", href: "/pricing" },
+            { label: "Contact", href: "/#contact" },
           ].map((link) => (
             <a
               key={link.label}
@@ -60,7 +60,7 @@ export const Nav: React.FC = () => {
         <div className="flex items-center gap-4">
           <div className="hidden md:block w-[1px] h-4 bg-smoke" />
           <a
-            href="#contact"
+            href="/app"
             className="inline-flex items-center gap-1.5 bg-transparent text-signal border border-signal hover:bg-signal hover:text-signal-dark px-4 py-1.5 text-[11px] font-semibold tracking-[0.06em] uppercase font-body active:scale-[0.97] transition-all duration-200"
             style={{ transitionTimingFunction: 'var(--ease-out)' }}
           >

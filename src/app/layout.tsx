@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, Manrope, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -7,28 +7,55 @@ const instrumentSerif = Instrument_Serif({
   weight: "400",
   subsets: ["latin"],
   style: ["normal", "italic"],
+  display: "swap",
+  preload: true,
 });
 
 const manrope = Manrope({
   variable: "--font-body",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
   variable: "--font-mono",
-  weight: ["300", "400", "500"],
+  weight: ["400", "500"],
   subsets: ["latin"],
+  display: "swap",
+  preload: false, // secondary font — no need to block
 });
+
+export const viewport: Viewport = {
+  themeColor: "#080808",
+  colorScheme: "dark",
+  width: "device-width",
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.thethreetier.com"),
-  title: "THE THREE TIER — AI Infrastructure Platform",
+  title: {
+    default: "The Three Tier — AI Infrastructure Platform",
+    template: "%s — The Three Tier",
+  },
   description:
     "Enterprise-scale AI infrastructure for high-stakes decisions. 99% automation accuracy, 60% faster operational cycles.",
-  keywords: ["AI infrastructure", "automation", "enterprise AI", "machine learning", "operational cycles"],
+  keywords: [
+    "AI infrastructure",
+    "automation",
+    "enterprise AI",
+    "machine learning",
+    "operational cycles",
+    "autonomous agents",
+    "CI/CD AI",
+  ],
+  authors: [{ name: "The Three Tier" }],
+  creator: "The Three Tier",
   openGraph: {
-    title: "THE THREE TIER — AI Infrastructure Platform",
-    description: "Enterprise-scale AI infrastructure for high-stakes decisions. 99% automation accuracy, 60% faster operational cycles.",
+    title: "The Three Tier — AI Infrastructure Platform",
+    description:
+      "Enterprise-scale AI infrastructure for high-stakes decisions. 99% automation accuracy, 60% faster operational cycles.",
     url: "https://www.thethreetier.com",
     siteName: "The Three Tier",
     locale: "en_US",
@@ -36,12 +63,21 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "THE THREE TIER — AI Infrastructure Platform",
-    description: "Enterprise-scale AI infrastructure for high-stakes decisions. 99% automation accuracy, 60% faster operational cycles.",
+    title: "The Three Tier — AI Infrastructure Platform",
+    description:
+      "Enterprise-scale AI infrastructure for high-stakes decisions. 99% automation accuracy, 60% faster operational cycles.",
+    creator: "@thethreetier",
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   alternates: {
     canonical: "https://www.thethreetier.com",
@@ -59,11 +95,16 @@ export default function RootLayout({
       className={`${instrumentSerif.variable} ${manrope.variable} ${ibmPlexMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        {/* Preconnect to Google Fonts for LCP */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body
         className="min-h-full flex flex-col bg-ink text-paper selection:bg-signal/30 selection:text-paper"
         suppressHydrationWarning
       >
-        <div className="grain-overlay" />
+        <div className="grain-overlay" aria-hidden="true" />
         {children}
       </body>
     </html>
