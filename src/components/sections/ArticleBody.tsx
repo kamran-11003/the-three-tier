@@ -1,46 +1,50 @@
-"use client";
+// Server Component — no "use client" directive
+// Markdown is processed at build time; zero JS shipped for the body itself.
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { CaseStudySection } from "@/lib/case-studies";
+import { ArticleSideNav } from "./ArticleSideNav";
 
-// Simple markdown parser for the specific needs of the case studies
-function markdownToHtml(markdown: string): string {
-  let html = markdown;
+// ─────────────────────────────────────────────
+// Lightweight markdown → safe HTML (server-side only)
+// ─────────────────────────────────────────────
+function markdownToHtml(md: string): string {
+  let html = md;
 
-  // Bold text: **text** -> <strong>text</strong>
+  // Bold / italic
   html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-
-  // Italic text: *text* -> <em>text</em>
   html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
 
-  // Handle lists first to avoid wrapping list items in paragraphs
-  // Unordered lists
-  html = html.replace(/(?:^|\n)(-[^\n]+)(?:\n|$)+/g, (match) => {
-    const items = match
+  // Unordered lists — group consecutive "- " lines
+  html = html.replace(/((?:^|\n)-[^\n]+)+/g, (block) => {
+    const items = block
       .trim()
       .split("\n")
-      .map((line) => `<li>${line.replace(/^- /, "")}</li>`)
+      .map((l) => `<li>${l.replace(/^-\s*/, "").trim()}</li>`)
       .join("");
-    return `<ul>${items}</ul>\n`;
+    return `<ul>${items}</ul>`;
   });
 
-  // Ordered lists
-  html = html.replace(/(?:^|\n)(\d+\.[^\n]+)(?:\n|$)+/g, (match) => {
-    const items = match
+  // Ordered lists — group consecutive "N. " lines
+  html = html.replace(/((?:^|\n)\d+\.[^\n]+)+/g, (block) => {
+    const items = block
       .trim()
       .split("\n")
-      .map((line) => `<li>${line.replace(/^\d+\.\s/, "")}</li>`)
+      .map((l) => `<li>${l.replace(/^\d+\.\s*/, "").trim()}</li>`)
       .join("");
-    return `<ol>${items}</ol>\n`;
+    return `<ol>${items}</ol>`;
   });
 
-  // Paragraphs
+  // Paragraphs — double newlines that aren't already block-level
   html = html
     .split(/\n\n+/)
     .map((p) => {
-      if (p.startsWith("<ul") || p.startsWith("<ol")) return p;
-      return `<p>${p.trim()}</p>`;
+      const t = p.trim();
+      if (!t) return "";
+      if (/^<(ul|ol|li|h[1-6])/.test(t)) return t;
+      return `<p>${t}</p>`;
     })
+    .filter(Boolean)
     .join("\n");
 
   return html;
@@ -51,65 +55,32 @@ interface Props {
 }
 
 export function ArticleBody({ sections }: Props) {
-  const [activeId, setActiveId] = useState(sections[0]?.id || "");
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // Find the first intersecting entry
-        const visibleEntry = entries.find((e) => e.isIntersecting);
-        if (visibleEntry) {
-          setActiveId(visibleEntry.target.id);
-        }
-      },
-      { rootMargin: "-30% 0px -60% 0px", threshold: 0.1 }
-    );
-
-    sections.forEach((s) => {
-      const el = document.getElementById(s.id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, [sections]);
-
   return (
-    <section className="bg-ink py-20">
+    <section className="bg-ink py-20" aria-label="Article body">
       <div className="container">
         <div className="grid grid-cols-12 gap-8">
-          {/* Sticky sidebar nav */}
-          <aside className="col-span-3 hidden lg:block">
-            <div className="sticky top-28">
-              <p className="font-mono text-[9px] text-whisper tracking-widest uppercase mb-4">
-                In This Article
-              </p>
-              <nav className="space-y-1">
-                {sections.map((s) => (
-                  <a
-                    key={s.id}
-                    href={`#${s.id}`}
-                    className={`block font-body text-[12.5px] py-1.5 pl-3 border-l-2 transition-all duration-200 ${
-                      activeId === s.id
-                        ? "text-paper border-signal"
-                        : "text-ghost border-wire hover:text-paper hover:border-ghost"
-                    }`}
-                  >
-                    {s.heading}
-                  </a>
-                ))}
-              </nav>
-            </div>
-          </aside>
+          {/* Client-only sticky nav (tiny JS island) */}
+          <ArticleSideNav
+            sections={sections.map(({ id, heading }) => ({ id, heading }))}
+          />
 
-          {/* Article content */}
-          <article className="col-span-12 lg:col-span-8 lg:col-start-4">
+          {/* Article content — pure Server HTML, zero JS */}
+          <article
+            className="col-span-12 lg:col-span-8 lg:col-start-4"
+            aria-label="Case study content"
+          >
             {sections.map((s) => (
-              <div key={s.id} id={s.id} className="mb-16 scroll-mt-28 group">
-                <h2 className="font-display text-[32px] text-paper leading-tight tracking-[-0.01em] mb-6 transition-colors duration-300">
+              <div
+                key={s.id}
+                id={s.id}
+                className="mb-16 scroll-mt-28"
+              >
+                <h2 className="font-display text-[32px] text-paper leading-tight tracking-[-0.01em] mb-6">
                   {s.heading}
                 </h2>
                 <div
                   className="prose-custom"
+                  // Safe: content is authored internally, not user-generated
                   dangerouslySetInnerHTML={{ __html: markdownToHtml(s.body) }}
                 />
               </div>

@@ -99,11 +99,20 @@ export default function RootLayout({
         {/* Preconnect to Google Fonts for LCP */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* DNS prefetch for any CDN assets */}
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
       </head>
       <body
         className="min-h-full flex flex-col bg-ink text-paper selection:bg-signal/30 selection:text-paper"
         suppressHydrationWarning
       >
+        {/* Skip navigation — first focusable element, critical for accessibility */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-signal focus:text-ink focus:font-mono focus:text-[11px] focus:tracking-widest focus:uppercase focus:outline-none"
+        >
+          Skip to main content
+        </a>
         <div className="grain-overlay" aria-hidden="true" />
         {children}
       </body>

@@ -135,7 +135,7 @@ export const Hero: React.FC = () => {
       </div>
 
       {/* Bottom Marquee Strip — CSS animation runs off main thread */}
-      <div className="border-t border-wire bg-ink py-5 z-10">
+      <div className="border-t border-wire bg-ink py-5 z-10 mt-8">
         <div className="container flex flex-col md:flex-row items-center gap-4 md:gap-8">
           <span className="font-mono text-[10px] tracking-wider text-ghost uppercase shrink-0">
             built for SaaS brands

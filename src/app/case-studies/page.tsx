@@ -1,6 +1,5 @@
 import React from "react";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { CASE_STUDIES } from "@/lib/case-studies";
 import { CaseStudyCard } from "@/components/ui/CaseStudyCard";
 import { Nav } from "@/components/layout/Nav";
@@ -23,14 +22,20 @@ export default function CaseStudiesIndex() {
   return (
     <>
       <Nav />
-      <main className="bg-ink min-h-screen">
+      <main id="main-content" className="bg-ink min-h-screen">
         {/* Page header */}
-        <section className="border-b border-wire py-20 pt-36">
+        <section aria-labelledby="case-studies-heading" className="border-b border-wire py-20 pt-36">
           <div className="container">
-            <span className="font-mono text-[11px] tracking-widest text-ghost uppercase block mb-5">
+            <p
+              className="font-mono text-[11px] tracking-widest text-ghost uppercase block mb-5"
+              aria-hidden="true"
+            >
               Case Studies
-            </span>
-            <h1 className="font-display text-[clamp(48px,6vw,80px)] text-paper leading-[0.95] tracking-[-0.02em] max-w-2xl">
+            </p>
+            <h1
+              id="case-studies-heading"
+              className="font-display text-[clamp(48px,6vw,80px)] text-paper leading-[0.95] tracking-[-0.02em] max-w-2xl"
+            >
               Built. Deployed. Measured.
             </h1>
             <p className="font-body text-[16px] text-ghost max-w-lg mt-6 leading-relaxed">
@@ -41,15 +46,19 @@ export default function CaseStudiesIndex() {
         </section>
 
         {/* All cards */}
-        <section className="py-20">
+        <section aria-label="All case studies" className="py-20">
           <div className="container">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-smoke border border-smoke">
+            <ul
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-smoke border border-smoke list-none p-0 m-0"
+              role="list"
+            >
               {CASE_STUDIES.map((cs, i) => (
-                <div key={cs.slug} className="bg-ink">
-                  <CaseStudyCard cs={cs} index={i} />
-                </div>
+                <li key={cs.slug} className="bg-ink">
+                  {/* priority=true on first card helps LCP on this page */}
+                  <CaseStudyCard cs={cs} index={i} priority={i === 0} />
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </section>
       </main>

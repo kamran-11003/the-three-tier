@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { CASE_STUDIES } from "@/lib/case-studies";
@@ -12,6 +12,7 @@ import { ArticleBody } from "@/components/sections/ArticleBody";
 import { RelatedCases } from "@/components/sections/RelatedCases";
 import { CtaBand } from "@/components/sections/CtaBand";
 
+// Static generation — pre-renders all slugs at build time
 export async function generateStaticParams() {
   return CASE_STUDIES.map((cs) => ({ slug: cs.slug }));
 }
@@ -37,7 +38,7 @@ export async function generateMetadata({
       publishedTime: cs.publishDate,
       images: [
         {
-          url: cs.seo.ogImage,
+          url: `https://www.thethreetier.com${cs.seo.ogImage}`,
           width: 1920,
           height: 640,
           alt: cs.title,
@@ -49,7 +50,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: cs.seo.metaTitle,
       description: cs.seo.metaDescription,
-      images: [cs.seo.ogImage],
+      images: [`https://www.thethreetier.com${cs.seo.ogImage}`],
     },
     alternates: {
       canonical: cs.seo.canonicalUrl,
@@ -71,33 +72,32 @@ export default async function CaseStudyPage({
   return (
     <>
       <Nav />
-      <main className="bg-ink min-h-screen">
-        {/* JSON-LD structured data */}
-        <CaseStudyJsonLd cs={cs} />
-        <BreadcrumbJsonLd cs={cs} />
 
-        {/* Hero */}
+      {/* JSON-LD — in <head> via Next.js metadata pipeline */}
+      <CaseStudyJsonLd cs={cs} />
+      <BreadcrumbJsonLd cs={cs} />
+
+      <main id="main-content" className="bg-ink min-h-screen">
+        {/* Hero — LCP target; priority image loaded eagerly */}
         <CaseStudyHero cs={cs} />
 
-        {/* Below-the-fold content optimized with content-visibility */}
-        <div style={{ contentVisibility: "auto" }}>
-          {/* Cover abstract */}
+        {/*
+          Below-the-fold: content-visibility skips paint/layout until near viewport.
+          containIntrinsicSize prevents scroll-position jumps (CLS fix).
+        */}
+        <div
+          style={{
+            contentVisibility: "auto",
+            containIntrinsicSize: "0 2400px",
+          }}
+        >
           <CoverAbstractBand abstract={cs.coverAbstract} />
-
-          {/* Article body with sticky sidebar nav */}
           <ArticleBody sections={cs.sections} />
-
-          {/* Related cases */}
-          <Suspense>
-            <RelatedCases cases={related} />
-          </Suspense>
-
-          {/* CTA */}
-          <Suspense>
-            <CtaBand />
-          </Suspense>
+          <RelatedCases cases={related} />
+          <CtaBand />
         </div>
       </main>
+
       <Footer />
     </>
   );
